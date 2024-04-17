@@ -6,7 +6,7 @@ import {
   uploadFile,
   createAssistant,
   createThread,
-  runAssistant,
+  runAssistantText,
   deleteFile,
 } from '../services/api';
 
@@ -115,7 +115,7 @@ export const runChatAssistant = async (assistantId: string, threadId: string): P
   
   console.log('Running chat assistant...');
 
-  const response = await runAssistant(assistantId, threadId);
+  const response = await runAssistantText(assistantId, threadId);
   const runId = response.runId;
 
   console.log('Chat assistant run successfully. Run ID:', runId);

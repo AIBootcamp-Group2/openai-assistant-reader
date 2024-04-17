@@ -75,9 +75,9 @@ export const uploadImageAndGetDescription = async (base64Image) => {
   };
   
   // Runs an assistant
-  export const runAssistant = async (assistantId, threadId) => {
+  export const runAssistantText = async (assistantId, threadId) => {
     console.log('Running assistant...');
-    const response = await fetch('/api/runAssistant', {
+    const response = await fetch('/api/runAssistantText', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ assistantId, threadId }),
