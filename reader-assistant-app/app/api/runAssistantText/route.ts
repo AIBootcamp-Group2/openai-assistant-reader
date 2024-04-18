@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
     
     // Logging the received IDs for debugging purposes. This helps in verifying that
     // the correct IDs are being processed.
-    console.log(`Inside -runAssistant --> assistantId: ${assistantId}`);
-    console.log(`Inside -runAssistant --> threadId: ${threadId}`);
+    console.log(`Inside -runAssistantText --> assistantId: ${assistantId}`);
+    console.log(`Inside -runAssistantText --> threadId: ${threadId}`);
 
     // Creating a new run (interaction) using the OpenAI API with the provided assistant and thread IDs.
     // This step is crucial for initiating the interaction with the AI assistant.
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     // Handling and logging any errors that occur during the process. This includes errors in
     // API requests, data extraction, or any other part of the interaction flow.
-    console.error(`Error in -runAssistant: ${error}`);
+    console.error(`Error in -runAssistantText: ${error}`);
     return NextResponse.json({ error: 'Failed to run assistant' }, { status: 500 });
   }
 }
