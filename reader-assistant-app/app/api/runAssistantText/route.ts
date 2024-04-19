@@ -18,8 +18,10 @@ import OpenAI from "openai";
 // Initialize the OpenAI client with the API key. The API key is essential for authenticating
 // and authorizing the requests to OpenAI's services.
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+    apiKey: process.env.OPENAI_API_KEY,
+    defaultHeaders: {"OpenAI-Beta": "assistants=v1"}
+  });
+
 
 export async function POST(req: NextRequest) {
   try {

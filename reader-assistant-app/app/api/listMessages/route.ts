@@ -14,8 +14,10 @@ import OpenAI from "openai";
 
 // Initialize OpenAI client using the API key from environment variables
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+    apiKey: process.env.OPENAI_API_KEY,
+    defaultHeaders: {"OpenAI-Beta": "assistants=v1"}
+  });
+
 
 // Define an asynchronous POST function to handle incoming requests
 export async function POST(req: NextRequest) {

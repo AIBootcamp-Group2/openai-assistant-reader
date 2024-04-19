@@ -17,8 +17,10 @@ import OpenAI from "openai";
 
 // Initialize the OpenAI client with the API key
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+    apiKey: process.env.OPENAI_API_KEY,
+    defaultHeaders: {"OpenAI-Beta": "assistants=v1"}
+  });
+
 
 export async function POST(request: NextRequest) {
   // Logging the start of the upload process
