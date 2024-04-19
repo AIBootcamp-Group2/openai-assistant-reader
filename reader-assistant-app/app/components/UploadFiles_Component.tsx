@@ -128,12 +128,34 @@ const UploadFiles_Configure: React.FC<UploadFilesProps> = ({ onFileIdUpdate, set
           ))}
         </div>
         <div className="text-center">
-          <button
-            className="bg-gray-200 text-gray-800 uppercase font-bold text-sm px-6 py-2 rounded shadow hover:bg-gray-300"
-            onClick={() => document.getElementById('fileUpload')?.click()}
-          >
-            Upload files
-          </button>
+          <div className="relative inline-block">
+            <button
+              className="bg-gray-200 text-gray-800 font-bold text-sm px-8 py-2 rounded shadow hover:bg-gray-300"
+              onClick={() => document.getElementById('fileUpload')?.click()}
+            >
+              UPLOAD YOUR READING
+              <span className="absolute transform -translate-y-0 right-4 top-3 cursor-pointer">
+                <svg
+                  className="h-3 w-3 text-gray-500 hover:text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title> 
+                    Only .pdf or .txt formats are allowed. 
+                    Max file size: 512MB
+                  </title>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M12 6v2m0 10v-6"
+                  ></path>
+                  <circle cx="12" cy="11" r="10"></circle>
+                </svg>
+              </span>
+            </button>
           <input
             id="fileUpload"
             type="file"
@@ -142,6 +164,7 @@ const UploadFiles_Configure: React.FC<UploadFilesProps> = ({ onFileIdUpdate, set
             multiple
           />
         </div>
+      </div>
       </div>
     </TooltipProvider>
   );
