@@ -42,7 +42,7 @@ export const uploadImageAndGetDescription = async (base64Image) => {
     // Log the assistant details and file IDs
     console.log('(create)-> Assistant Name:', assistantName);
     console.log('(create)-> Assistant Model:', assistantModel);
-    console.log('(create)-> Assistant Description:', assistantDescription);
+    /*console.log('(create)-> Assistant Description:', assistantDescription); */
     console.log('(create)-> File IDs:', fileIds);
 
     const response = await fetch('/api/createAssistant', {
