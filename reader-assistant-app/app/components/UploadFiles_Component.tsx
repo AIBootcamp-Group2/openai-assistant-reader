@@ -80,7 +80,7 @@ const UploadFiles_Configure: React.FC<UploadFilesProps> = ({ onFileIdUpdate, set
     <TooltipProvider>
       <div className="max-w-4xl mx-auto p-6 bg-whitetext-white">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-lg font-semibold">Knowledge</h1>
+          <h1 className="text-lg font-semibold"></h1>
           <div></div>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -132,7 +132,7 @@ const UploadFiles_Configure: React.FC<UploadFilesProps> = ({ onFileIdUpdate, set
             className="bg-gray-200 text-gray-800 uppercase font-bold text-sm px-6 py-2 rounded shadow hover:bg-gray-300"
             onClick={() => document.getElementById('fileUpload')?.click()}
           >
-            Upload files
+            📙Upload your book
           </button>
           <input
             id="fileUpload"
