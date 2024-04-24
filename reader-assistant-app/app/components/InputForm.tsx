@@ -89,7 +89,7 @@ return (
         required
         rows={1}
         autoFocus
-        placeholder="Send a message"
+        placeholder="Whats on your mind?"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
