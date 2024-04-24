@@ -76,7 +76,7 @@ const InputForm: React.FC<Props> = ({ input, setInput, inputRef, formRef, disabl
   };
 
 return (
-  <div className="fixed bottom-0 flex w-full mx-auto items-center bg-gradient-to-b from-transparent via-gray-100 to-gray-100 p-5 pb-3 sm:px-0">
+  <div className="fixed bottom-0 flex w-full justify-center mx-auto items-center bg-gradient-to-b from-transparent via-gray-100 to-gray-100 p-5 pb-3 sm:px-0">
     <div className="flex flex-col items-stretch w-2/3 max-w-screen-md mr-2 ml-20">
       <form
         ref={formRef}
