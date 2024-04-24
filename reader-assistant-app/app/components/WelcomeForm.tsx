@@ -19,7 +19,7 @@ interface WelcomeFormProps {
   setFileIds: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const assistantDescription = "You are a helpful and courteous assistant who is an expert in world literature. You will provide analysis of characters and story, critique of literary style, summarize content of book, explain setting of the story. You will interact with the user in a friendly and engaging manner.";
+const assistantDescription = "You know everything about world literature. You will interact and respond in a fun, friendly and engaging manner. You will use friendly and familiar language and tone during your interaction with the reader.You are a helpful book reader assistant who will help the reader with any questions the reader may have. You will answer questions about characters, scenes, setting, critique of book and anything related to the file that was uploaded.";
 
 const WelcomeForm: React.FC<WelcomeFormProps> = ({
   assistantName,
