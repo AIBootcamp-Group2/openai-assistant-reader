@@ -13,7 +13,7 @@ import {
 interface AssistantDetails {
   assistantName: string;
   assistantModel: string;
-  assistantDescription: string;
+  assistantDescription: "You are a helpful and courteous assistant who is an expert in world literature. You will provide analysis of characters and story, critique of literary style, summarize content of book, explain setting of the story. You will interact with the user in a friendly and engaging manner.";
 }
 
 interface UploadedFileResponse {

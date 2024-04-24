@@ -28,7 +28,7 @@ const openai = new OpenAI({
           // Log the fileIds
           console.log('File IDs:', fileIds);
   
-          if (!assistantName || !assistantModel || !assistantDescription) {
+          if (!assistantName || !assistantModel /*|| !assistantDescription*/) {
               throw new Error('Missing required assistant parameters');
           }
   
