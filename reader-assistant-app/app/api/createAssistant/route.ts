@@ -23,18 +23,18 @@ const openai = new OpenAI({
   export async function POST(req: NextRequest) {
     if (req.method === 'POST') {
       try {
-          const { assistantName, assistantModel, assistantDescription, fileIds } = await req.json();
+          const { assistantName, assistantModel, fileIds } = await req.json();
   
           // Log the fileIds
           console.log('File IDs:', fileIds);
   
-          if (!assistantName || !assistantModel /*|| !assistantDescription*/) {
+          if (!assistantName || !assistantModel) {
               throw new Error('Missing required assistant parameters');
           }
   
           const assistantOptions: any = {
               name: assistantName,
-              instructions: assistantDescription,
+              instructions:"You are a helpful reading assistant who knows a lot about world literature. You will interact and respond in a fun, friendly, and engaging manner. You will use friendly and familiar language and tone during the conversation with the user. You will help the user with any question given the specific file book. For example, you will answer questions about characters, scenes, settings, and anything related to the uploaded file.",
               model: assistantModel,
               tools: [{ "type": "retrieval" }],
           };
