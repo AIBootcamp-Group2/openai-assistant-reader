@@ -24,10 +24,10 @@ interface Message {
 */
 export const submitUserMessage = async (input: string, threadId: string, setStatusMessage: (message: string) => void, fileIds: string[]): Promise<void> => {
   console.log('File IDs in submitUserMessage:', fileIds);
-  setStatusMessage('Submitting user message...');
+  setStatusMessage('Submitting your message...');
   const message = { input, threadId, fileIds };
   await addMessage(message);
-  setStatusMessage('User message submitted successfully.');
+  setStatusMessage('Message submitted successfully.');
 };
 
 
@@ -40,7 +40,7 @@ export const submitUserMessage = async (input: string, threadId: string, setStat
 export const fetchAssistantResponse = async (runId: string, threadId: string, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, initialProgress: number): Promise<string> => {
   try {
     const startTime = Date.now(); // Get the current time at the start
-    setStatusMessage('Fetching assistant response...');
+    setStatusMessage('Fetching BookPal response...');
     let status: string;
     let fetchCount = 0; // Number of fetches so far
     const maxFetches = 10; // Maximum number of fetches
@@ -54,10 +54,10 @@ export const fetchAssistantResponse = async (runId: string, threadId: string, se
           throw new Error(status);
         }
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
-        setStatusMessage(`Waiting for assistant response... Current status: ${status}. Time elapsed: ${elapsedTime} seconds.`);
+        setStatusMessage(`Waiting for BookPal response... Current status: ${status}. Time elapsed: ${elapsedTime} seconds.`);
         await new Promise(resolve => setTimeout(resolve, 1000)); // Polling delay
     } while (status !== 'completed');
-    setStatusMessage('Assistant response fetched successfully.');
+    setStatusMessage('BookPal response fetched successfully.');
     setProgress(100); // Set progress to 100% after completion
     const response = await listMessages(threadId, runId);
     return response.messages;

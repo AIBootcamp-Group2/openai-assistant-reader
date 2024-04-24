@@ -77,31 +77,29 @@ class ChatManager {
   async startAssistant(assistantDetails: any, fileIds: string[], initialMessage: string): Promise<void> {
     console.log('Starting assistant...');
     
-    this.state.setStatusMessage('Initializing chat assistant...');
+    this.state.setStatusMessage('Initializing BookPal...');
     this.state.isLoading = true;
     
     try {
 
     
       // Initialize the assistant
-      this.state.setStatusMessage('Create Assistant...');
+      this.state.setStatusMessage('Create BookPal assistant...');
       const assistantId = await initializeAssistant(assistantDetails, fileIds);
       if (assistantId === null) {
         throw new Error('AssistantId is null');
       }
-      this.state.setStatusMessage('Assistant created...');
+      this.state.setStatusMessage('BookPal assistant created...');
   
       // Create the chat thread
-      this.state.setStatusMessage('Creating thread...');
       this.state.assistantId = assistantId;
       const threadId = await createChatThread(initialMessage);
       if (threadId === null) {
         throw new Error('ThreadId is null');
       }
-      this.state.setStatusMessage('Received thread_ID...');
   
       // Run the assistant
-      this.state.setStatusMessage('Running assistant...');
+      this.state.setStatusMessage('Running BookPal assistant...');
       this.state.threadId = threadId;
       const runId = await runChatAssistant(this.state.assistantId, this.state.threadId);
       if (runId === null) {
@@ -110,7 +108,6 @@ class ChatManager {
       
       // Store the run ID
       this.state.runId = runId; 
-      this.state.setStatusMessage('Received Run_ID..');
   
       // Fetch the assistant's response
       if (this.state.runId && this.state.threadId) {
@@ -157,18 +154,16 @@ async startAssistantWithId(assistantId: string, initialMessage: string): Promise
 
     this.state.setIsLoadingFirstMessage(true);
     // Create the chat thread
-    this.state.setStatusMessage('Creating thread...');
     this.state.setProgress(10); // Set progress to 10%
     this.state.assistantId = assistantId;
     const threadId = await createChatThread(initialMessage);
     if (threadId === null) {
       throw new Error('ThreadId is null');
     }
-    this.state.setStatusMessage('Received thread_ID...');
     this.state.setProgress(20); // Set progress to 20%
 
     // Run the assistant
-    this.state.setStatusMessage('Running assistant...');
+    this.state.setStatusMessage('Running BookPal assistant...');
     this.state.setProgress(30); // Set progress to 30%
     this.state.threadId = threadId;
     const runId = await runChatAssistant(this.state.assistantId, this.state.threadId);
@@ -177,23 +172,19 @@ async startAssistantWithId(assistantId: string, initialMessage: string): Promise
     }
 
     this.state.runId = runId; 
-    this.state.setStatusMessage('Received Run_ID..');
     this.state.setProgress(40); // Set progress to 40%
 
     // Fetch the assistant's response
     if (this.state.runId && this.state.threadId) {
       const runId = this.state.runId as string;
       const threadId = this.state.threadId as string;
-      this.state.setStatusMessage('checking status...');
       const assistantResponse = await fetchAssistantResponse(runId, threadId, this.state.setStatusMessage, this.state.setProgress, 10);
       
-      this.state.setStatusMessage('Run complete...');
       this.state.assistantResponseReceived = true;
       this.state.setStatusMessage('Received messages...');
       
       // Add the assistant's response to the messages
       const newMessage = { role: 'assistant', content: assistantResponse };
-      this.state.setStatusMessage('Adding messages to chat...');
       
       this.state.messages = [...this.state.messages, newMessage];
       this.state.setChatMessages(this.state.messages);
