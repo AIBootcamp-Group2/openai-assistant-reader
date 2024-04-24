@@ -68,8 +68,8 @@ const WelcomeForm: React.FC<WelcomeFormProps> = ({
           
           <br/>
           જ⁀➴
-          BookPal is an AI reader that enhances your reading experience by generating an OpenAI Assistant based on the book you upload.
-          It allows you to interact with the book, providing analysis, character descriptions, and more. 
+          BookPal is an AI reader that enhances your reading experience by generating an OpenAI Assistant based on the book of your choice. 
+          It allows you to interact with it, providing analysis, character descriptions, and more.
           Additionally, it generates images based on your prompts or the assistant's suggestions, making the reading experience immersive and enjoyable.
         </p>
 
@@ -77,15 +77,10 @@ const WelcomeForm: React.FC<WelcomeFormProps> = ({
           ── ˗ˏˋ ★ Let's have fun ★ ˎˊ˗ ── 
         </h1>
 
-        <h1 className="text-lg font-semibold  py-4" style={{ color: 'rgb(	179, 76, 83)' }}>
-          Name your BookPal Assistant
-        </h1>
-
-
         <form className="flex flex-col space-y-3">
           <input
             type="text"
-            placeholder="Assistant Name"
+            placeholder="What are you reading today? Write the books title"
             value={assistantName}
             onChange={(e) => setAssistantName(e.target.value)}
             required
