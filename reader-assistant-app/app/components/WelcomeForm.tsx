@@ -80,7 +80,7 @@ const WelcomeForm: React.FC<WelcomeFormProps> = ({
         <form className="flex flex-col space-y-3">
           <input
             type="text"
-            placeholder="What are you reading today? Write the books title"
+            placeholder="What are you reading today? Write the book's title..."
             value={assistantName}
             onChange={(e) => setAssistantName(e.target.value)}
             required
