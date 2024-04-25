@@ -7,6 +7,7 @@ import {
   createAssistant,
   createThread,
   runAssistantText,
+  runAssistantImage,
   deleteFile,
 } from '../services/api';
 
@@ -121,6 +122,24 @@ export const runChatAssistant = async (assistantId: string, threadId: string): P
   console.log('Chat assistant run successfully. Run ID:', runId);
   return runId; 
 };
+
+/**
+* Runs the image generator for a given thread.
+* @param {string} assistantId - The ID of the assistant.
+* @param {string} threadId - The ID of the thread.
+* @returns {Promise<void>} - A promise that resolves when the assistant is successfully run.
+*/
+export const runImageGenerator = async (threadId: string): Promise<string | null> => {
+  
+  console.log('Running chat assistant...');
+
+  const response = await runAssistantImage(threadId);
+  const runId = response.runId;
+
+  console.log('Chat assistant run successfully. Run ID:', runId);
+  return runId; 
+};
+
 
 /**
 * Deletes a file from the chat assistant.

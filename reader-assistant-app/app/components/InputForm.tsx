@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import Textarea from 'react-textarea-autosize';
-import { SendIcon, LoadingCircle, DocumentIcon, XIcon, ImageIcon } from '../icons';
+import { SendIcon, LoadingCircle} from '../icons';
 
 interface Props {
   input: string;
@@ -47,32 +47,18 @@ const InputForm: React.FC<Props> = ({ input, setInput, inputRef, formRef, disabl
         setIsSending(false);
       }
     }
-  };
-
-  const handleChatFilesUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const newFiles = Array.from(event.target.files);
-      if (chatFileDetails.length + newFiles.length > 10) {
-        alert('You can only upload up to 10 files.');
-        return;
-      }
-      const fileArray = newFiles.map((file) => ({
-        name: file.name,
-        type: file.type,
-        size: file.size,
-      }));
-      setChatFileDetails([...chatFileDetails, ...fileArray]);
-      setChatUploadedFiles([...chatUploadedFiles, ...newFiles]);
-    }
-    event.target.value = ''; 
-  };
-
-  const removeChatFile = (fileName: string) => {
-    const updatedFileDetails = chatFileDetails.filter((file) => file.name !== fileName);
-    setChatFileDetails(updatedFileDetails);
-  
-    const updatedUploadedFiles = chatUploadedFiles.filter((file) => file.name !== fileName);
-    setChatUploadedFiles(updatedUploadedFiles);
+    // const prompt = input;
+    // setInput('');
+    // setIsSending(true);
+    // if (chatManager) {
+    //   try {
+    //     await chatManager.sendImagePrompt(prompt); 
+    //   } catch (error) {
+    //     console.error('Error sending message:', error);
+    //   } finally {
+    //     setIsSending(false);
+    //   }
+    // }
   };
 
 return (
@@ -128,6 +114,21 @@ return (
       <button
         className="bg-blue-500 p-2 text-white rounded shadow-xl"
         disabled={isLoading}
+        // onClick={async () => {
+        //   setImageIsLoading(true);
+        //   const response = await fetch("api/images", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //       message: messages[messages.length - 1].content,
+        //     }),
+        //   });
+        //   const data = await response.json();
+        //   setImage(data);
+        //   setImageIsLoading(false);
+        // }}
       >
         Generate image
       </button>

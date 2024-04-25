@@ -3,12 +3,14 @@ import {
   prepareUploadFile,
   initializeAssistant,
   createChatThread,
-  runChatAssistant
+  runChatAssistant,
+  runImageGenerator
 } from '../modules/assistantModules';
 
 import {
   submitUserMessage,
   fetchAssistantResponse,
+  fetchImageResponse,
   updateChatState
 } from '../modules/chatModules';
 
@@ -22,6 +24,7 @@ interface ChatState {
   isLoading: boolean; // Loading state
   error: Error | null; // Any error that occurred
   runId: string | null; // ID of the assistant run
+  image: string | null;
   assistantResponseReceived: boolean; // Whether the assistant's response has been received
   isSending: boolean; // Whether a message is being sent
   setChatMessages: (messages: any[]) => void; // Function to set the chat messages
@@ -29,8 +32,9 @@ interface ChatState {
   statusMessage:string; // Status message
   setProgress: (progress: number) => void; // Function to set the progress
   setIsLoadingFirstMessage: (isLoading: boolean) => void;
+  setImageIsLoading: (isLoading: boolean) => void;
+  setImage: (messages: any[]) => void; // Function to set the chat messages}
 }
-
 /**
  * Class to manage the state and operations of the chat
  */
@@ -40,7 +44,9 @@ class ChatManager {
   private static instance: ChatManager | null = null; // Singleton instance of the ChatManager
 
   // Private constructor for singleton pattern
-  private constructor(setChatMessages: (messages: any[]) => void, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, setIsLoadingFirstMessage: (isLoading: boolean) => void) {
+  private constructor(setChatMessages: (messages: any[]) => void, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, setIsLoadingFirstMessage: (isLoading: boolean) => void,
+                      setImageIsLoading:(isLoading: boolean) => void,
+                      setImage:(messages:any[])=>void) {
     // Initialize the state
     this.state = {
       assistantId: null,
@@ -49,6 +55,7 @@ class ChatManager {
       isLoading: false,
       error: null,
       runId: null,
+      image:null,
       assistantResponseReceived: false,
       isSending: false,
       setChatMessages: setChatMessages,
@@ -56,6 +63,8 @@ class ChatManager {
       statusMessage: '',
       setProgress: setProgress,
       setIsLoadingFirstMessage: setIsLoadingFirstMessage,
+      setImageIsLoading:setImageIsLoading,
+      setImage:setImage
     };
     console.log('ChatManager initialized');
   }
@@ -66,9 +75,13 @@ class ChatManager {
   }
 
   // Method to get the singleton instance of the ChatManager
-  public static getInstance(setChatMessages: (messages: any[]) => void, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, setIsLoadingFirstMessage: (isLoading: boolean) => void): ChatManager { // Add setIsLoadingFirstMessage here
+  public static getInstance(setChatMessages: (messages: any[]) => void, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, setIsLoadingFirstMessage: (isLoading: boolean) => void,
+                            setImageIsLoading:(isLoading: boolean) => void,
+                            setImage:(messages:any[])=>void): ChatManager { // Add setIsLoadingFirstMessage here
     if (this.instance === null) {
-      this.instance = new ChatManager(setChatMessages, setStatusMessage, setProgress, setIsLoadingFirstMessage); // And here
+      this.instance = new ChatManager(setChatMessages, setStatusMessage,
+                                      setProgress, setIsLoadingFirstMessage,
+                                      setImageIsLoading,setImage); // And here
     }
     return this.instance;
   }
@@ -263,7 +276,48 @@ async sendMessage(input: string, files: File[], fileDetails: any[]): Promise<voi
     this.state.isSending = false; 
   }
 }
+// Method to request an image
+async sendImagePrompt(input: string): Promise<void> {
+  console.log('Sending request...');
+  this.state.setProgress(0);
+  this.state.isSending = true; 
+  const prompt = { role: 'user', content: input};
+  this.state.messages = [...this.state.messages, prompt];
+  this.state.setChatMessages(this.state.messages);
 
+  try {
+    if (this.state.threadId && this.state.assistantId) { 
+      // Submit the user's prompt
+      await submitUserMessage(input, this.state.threadId, this.state.setStatusMessage, []); // Pass the file IDs here
+      console.log('User prompt submitted. Running assistant...');
+      
+      // Run the image generator
+      this.state.image = await runImageGenerator(this.state.threadId as string);
+      console.log('Image generator run successfully. Fetching assistant response...');
+      
+      // Fetch the assistant's response
+      const response = await fetchImageResponse(this.state.threadId as string, this.state.setStatusMessage, this.state.setProgress,0);
+      console.log('Assistant response fetched. Adding to chat state...');
+      
+      
+      // Add the assistant's response to the messages
+      const newAssistantMessage = { role: 'assistant', content: response };
+      this.state.messages = [...this.state.messages, newAssistantMessage];
+      this.state.setChatMessages(this.state.messages);
+      
+    } else {
+      console.error('ThreadId or AssistantId is null');
+    }
+  } catch (error) {
+    // Handle any errors
+    this.state.error = error as Error;
+    console.error('Error in sending message:', error);
+  } finally {
+    // Finalize the operation
+    this.state.setProgress(0);
+    this.state.isSending = false; 
+  }
+}
   // Method to get the current chat state
   getChatState(): ChatState {
     console.log('Getting chat state');

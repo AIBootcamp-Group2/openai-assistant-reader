@@ -36,7 +36,8 @@ export const useChatState = () => {
   const [chatUploadedFiles, setChatUploadedFiles] = useState<File[]>([]);
   const [chatFileDetails, setChatFileDetails] = useState<FileDetail[]>([]);
   const [fileIds, setFileIds] = useState<string[]>([]); 
-
+  const [imageIsLoading, setImageIsLoading] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
 
   return {
     assistantName, setAssistantName,
@@ -64,7 +65,7 @@ export const useChatState = () => {
     chatUploadedFiles, setChatUploadedFiles,
     chatFileDetails, setChatFileDetails,
     fileIds, setFileIds,
-    
-
+    imageIsLoading, setImageIsLoading,
+    image, setImage
   };
 };

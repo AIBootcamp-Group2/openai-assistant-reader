@@ -32,6 +32,9 @@ export default function Chat() {
     chatUploadedFiles = [], setChatUploadedFiles,
     chatFileDetails, setChatFileDetails,
     fileIds, setFileIds,
+    imageIsLoading, setImageIsLoading,
+    image,setImage
+
   } = useChatState();
 
   useChatManager(setChatMessages, setStatusMessage, setChatManager, setIsMessageLoading, setProgress, setIsLoadingFirstMessage);
@@ -49,7 +52,7 @@ export default function Chat() {
         console.log('File IDs:', fileIds);
         console.log('Initial Thread Message:', initialThreadMessage);
   
-        await chatManager.startAssistant({ assistantName, assistantModel, /*assistantDescription*/}, fileIds, initialThreadMessage);
+        await chatManager.startAssistant({ assistantName, assistantModel}, fileIds, initialThreadMessage);
         
         console.log('Assistant started:', chatManager.getChatState());
         setChatStarted(true);
@@ -68,9 +71,13 @@ export default function Chat() {
       {chatHasStarted || assistantId || isLoadingFirstMessage  ? (
         <MessageList chatMessages={chatMessages} statusMessage={statusMessage} isSending={isSending} progress={progress} isFirstMessage={isLoadingFirstMessage} fileDetails={chatFileDetails} />
       ) : (
-        <WelcomeForm {...{assistantName, setAssistantName, /*assistantDescription, setAssistantDescription,*/ assistantModel, setAssistantModel, startChatAssistant, isButtonDisabled, isStartLoading, statusMessage, fileIds, setFileIds}} />
+        <WelcomeForm {...{assistantName, setAssistantName, assistantModel, setAssistantModel, startChatAssistant, isButtonDisabled, isStartLoading, statusMessage, fileIds, setFileIds}} />
       )}
-      <InputForm {...{input: inputmessage, setInput: setInputmessage, inputRef, formRef, disabled: isButtonDisabled || !chatManager, chatStarted: chatMessages.length > 0, isSending, isLoading: isMessageLoading, chatUploadedFiles, setChatUploadedFiles, chatFileDetails, setChatFileDetails, chatManager, setChatStarted, setChatMessages, setStatusMessage, setIsSending, setProgress, setIsLoadingFirstMessage}} />
+      <InputForm {...{input: inputmessage, setInput: setInputmessage, inputRef, formRef, disabled: isButtonDisabled || !chatManager,
+                      chatStarted: chatMessages.length > 0, isSending, isLoading: isMessageLoading, chatUploadedFiles, setChatUploadedFiles,
+                      chatFileDetails, setChatFileDetails, chatManager, setChatStarted, setChatMessages, setStatusMessage, setIsSending,
+                      setProgress, setIsLoadingFirstMessage}} />
+      
     </main>
   );
 }

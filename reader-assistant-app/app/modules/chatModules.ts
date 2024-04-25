@@ -4,6 +4,7 @@ import {
   addMessage,
   listMessages,
   checkRunStatus,
+  runAssistantImage
 } from '../services/api';
 
 interface StatusData {
@@ -71,6 +72,44 @@ export const fetchAssistantResponse = async (runId: string, threadId: string, se
   }
 };
 
+/**
+* Fetches the latest messages from the assistant, waiting until the assistant has responded.
+* @param {string} threadId - The ID of the chat thread.
+* @returns {Promise<string>} - A promise that resolves to the messages from the assistant.
+*/
+export const fetchImageResponse = async (threadId: string, setStatusMessage: (message: string) => void, setProgress: (progress: number) => void, initialProgress: number): Promise<string> => {
+  try {
+    const startTime = Date.now(); // Get the current time at the start
+    setStatusMessage('Fetching assistant response...');
+    let status: string;
+    let fetchCount = 0; // Number of fetches so far
+    const maxFetches = 10; // Maximum number of fetches
+    do {
+        const statusData: StatusData = await checkRunStatus(threadId);
+        status = statusData.status;
+        fetchCount++; // Increment the fetch count
+        const progress = initialProgress + ((fetchCount / maxFetches) * (90 - initialProgress)); // Calculate progress as a percentage
+        setProgress(progress); // Update the progress bar
+        if (status === 'cancelled' || status === 'cancelling' || status === 'failed' || status === 'expired') {
+          throw new Error(status);
+        }
+        const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
+        setStatusMessage(`Waiting for assistant response... Current status: ${status}. Time elapsed: ${elapsedTime} seconds.`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Polling delay
+    } while (status !== 'completed');
+    setStatusMessage('Assistant response fetched successfully.');
+    setProgress(100); // Set progress to 100% after completion
+    const response = await runAssistantImage(threadId);
+    return response.messages;
+  } catch (error) {
+    setProgress(0); // Reset progress in case of error
+    if (error instanceof Error) {
+      setStatusMessage(`Error: ${error.message}`);
+      throw error; // Re-throw the error after setting the status message
+    }
+    throw error; // Re-throw the error if it's not an instance of Error
+  }
+};
 
 /**
  * Updates the chat state with new messages.

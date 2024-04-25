@@ -90,6 +90,23 @@ export const uploadImageAndGetDescription = async (base64Image) => {
     console.log('Assistant run successfully. Run ID:', data.runId);
     return data;
   };
+
+    // Runs an image-generator
+    export const runAssistantImage = async (threadId) => {
+      console.log('Running image-generator...');
+      const response = await fetch('/api/runAssistantImage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({threadId }),
+      });
+      if (!response.ok) {
+        console.error('Failed to run image-generator');
+        throw new Error('Failed to run image-generator');
+      }
+      const data = await response.json();
+      console.log('Image-generator run successfully. Run ID:', data.runId);
+      return data;
+    };
   
   // Checks the status of a run
   export const checkRunStatus = async (threadId, runId) => {
